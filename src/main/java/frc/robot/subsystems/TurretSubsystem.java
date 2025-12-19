@@ -45,7 +45,7 @@ public class TurretSubsystem extends SubsystemBase {
   SparkFlex turretMotor = new SparkFlex(31, MotorType.kBrushless);
 
     private final LoggedTunableNumber kP =
-   new LoggedTunableNumber("Turret/kP", 0.001);
+   new LoggedTunableNumber("Turret/kP", 0.010);
    private final LoggedTunableNumber kI =
    new LoggedTunableNumber("Turret/kI", 0);
    private final LoggedTunableNumber kD =
@@ -58,11 +58,11 @@ public TurretSubsystem(){
   motorConfig = new SparkFlexConfig();
       motorConfig.closedLoop
             // Set PID values for velocity control in slot 1
-            .p(0.00001, ClosedLoopSlot.kSlot1)
+            .p(0.1, ClosedLoopSlot.kSlot1)
             .i(0, ClosedLoopSlot.kSlot1)
             .d(0, ClosedLoopSlot.kSlot1)
             .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-            .outputRange(-0.4, 0.4, ClosedLoopSlot.kSlot1);
+            .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
             motorConfig.inverted(true);
             turretMotor.configure(motorConfig, SparkBase.ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
             pid.setTolerance(1);
@@ -97,7 +97,7 @@ public void setTurn(){
     double output = pid.calculate(target, 0); 
     
     SmartDashboard.putNumber("Target", target);
-    SmartDashboard.putNumber("PID Turret: ", output);
+    SmartDashboard.putNumber("output", output);
   
     turretMotor.set(output);
   }
